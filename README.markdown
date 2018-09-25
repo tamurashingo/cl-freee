@@ -148,7 +148,7 @@ not implemented
 (get-wallete-txns *conn* :company-id xxxx)
 ```
 
-#### 講座
+#### 口座
 
 ```lisp
 (get-walletables *conn* :company-id xxxx)
