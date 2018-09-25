@@ -17,10 +17,12 @@
   :author "tamura shingo"
   :license "MIT"
   :depends-on (:dexador
-               :quri)
+               :quri
+               :cl-json)
   :components ((:module "src"
                 :components
-                ((:file "cl-freee"))))
+                ((:file "cl-freee" :depends-on ("connection" "api")
+                 (:file "connection")))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames

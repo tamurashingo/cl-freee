@@ -1,6 +1,12 @@
 (in-package :cl-user)
 (defpackage cl-freee.connection
-  (:use :cl))
+  (:use :cl)
+  (:export :<freee-connection>
+           :access-token
+           :authorize
+           :make-connection
+           :refresh))
+  
 (in-package :cl-freee.connection)
 
 (defclass <freee-connection> ()
@@ -27,19 +33,19 @@
   "https://api.freee.co.jp/oauth/token")
 
 (defgeneric authorize (connection authorization-code)
-  (:documentation ""))
+  (:documentation "authorization-codeを受け取り、アクセストークン、リフレッシュトークンを取得する"))
 
 (defgeneric refresh (connection)
-  (:documentation ""))
+  (:documentation "トークンのリフレッシュを行う"))
 
 
 (defun make-connection (&key client-id client-secret redirect-uri access-token refresh-token callback)
   (when (not (and client-id client-secret redirect-uri))
     (error "client-id, client-secret, redirect-uri are required"))
   (let ((callback (if callback
+                      callback
                      #'(lambda (access-token refresh-token)
-                         (declare (ignore access-token refresh-token)))
-                     callback)))
+                         (declare (ignore access-token refresh-token))))))
     (make-instance '<freee-connection>
                    :client-id client-id
                    :client-secret client-secret
@@ -50,17 +56,16 @@
 
 (defmethod authorize ((connection <freee-connection>) authorization-code)
   (loop for x in (authorize-1 connection authorization-code)
-        when (consp x)
-          if (string= (car x) "access_token")
-            do (setf (access-token connection) (cdr x))
-          else if (string= (car x) "refresh_token")
-            do (setf (refresh-token connection) (cdr x))
-          end)
+        if (eq (car x) :ACCESS--TOKEN)
+          do (setf (access-token connection) (cdr x))
+        else if (eq (car x) :REFRESH--TOKEN)
+          do (setf (refresh-token connection) (cdr x))
+        end)
   (funcall (callback connection) (access-token connection) (refresh-token connection))
   connection)
 
 (defun authorize-1 (connection authorization-code)
-  (jsown:parse
+  (cl-json:decode-json-from-string
    (dex:post *TOKEN-URI*
              :content `(("grant_type" . "authorization_code")
                         ("client_id" . ,(client-id connection))
@@ -70,22 +75,18 @@
 
 (defmethod refresh ((connection <freee-connection>))
   (loop for x in (refresh-1 connection)
-        when (consp x)
-          if (string= (car x) "access_token")
-            do (setf (access-token connection) (cdr x))
-          else if (string= (car x) "refresh_token")
-            do (setf (refresh-token connection) (cdr x))
-          end)
+        if (eq (car x) :ACCESS--TOKEN)
+          do (setf (access-token connection) (cdr x))
+        else if (eq (car x) :REFRESH--TOKEN)
+          do (setf (refresh-token connection) (cdr x))
+        end)
   (funcall (callback connection) (access-token connection) (refresh-token connection))
   connection)
 
-
 (defun refresh-1 (connection)
-  (jsown:parse
-   (dex:post "https://api.freee.co.jp/oauth/token"
+  (cl-json:decode-json-from-string
+   (dex:post *TOKEN-URI*
              :content `(("grant_type" . "refresh_token")
                         ("client_id" . ,(client-id connection))
                         ("client_secret" . ,(client-secret connection))
                         ("refresh_token" . ,(refresh-token connection))))))
-
-

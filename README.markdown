@@ -2,7 +2,9 @@
 
 ## Usage
 
-### connection
+### 接続
+
+アクセストークンをすでに取得済みの場合
 
 ```commonlisp
 (defvar *conn*
@@ -13,6 +15,8 @@
                    :refresh-token "xxxxxxxxxxx"))
 ```
 
+アクセストークンを取得していない場合（これから取得する場合）
+
 ```commonlisp
 (defvar *conn*
   (make-connection :client-id "xxxxxxxxxxxxx"
@@ -22,9 +26,9 @@
 (authorize *conn* authorization-code)
 ```
 
-### store access-token and refresh-token
+### アクセストークン、リフレッシュトークンの保存
 
-use `:callback` to store access-token and refresh-token.
+トークンをリフレッシュした際に、`callback`を呼ぶのでそれを使って新しいトークンを保存します。
 
 
 ```commonlisp
@@ -39,6 +43,10 @@ use `:callback` to store access-token and refresh-token.
                                  (setf *access-token* access-token)
                                  (setf *refresh-token* refresh-token))))
 ```
+
+### API
+
+
 
 
 ## Installation
