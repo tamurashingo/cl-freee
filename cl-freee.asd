@@ -21,8 +21,26 @@
                :cl-json)
   :components ((:module "src"
                 :components
-                ((:file "cl-freee" :depends-on ("connection" "api")
-                 (:file "connection")))))
+                ((:file "cl-freee" :depends-on ("connection" "api"))
+                 (:file "connection")
+                 (:module "api" :depends-on ("connection")
+                  :components
+                  ((:file "api")
+                   (:file "account_items" :depends-on ("api"))
+                   (:file "banks" :depends-on ("api"))
+                   (:file "companies" :depends-on ("api"))
+                   (:file "deals" :depends-on ("api"))
+                   (:file "items" :depends-on ("api"))
+                   (:file "manual_journals" :depends-on ("api"))
+                   (:file "partners" :depends-on ("api"))
+                   (:file "sections" :depends-on ("api"))
+                   (:file "selectables" :depends-on ("api"))
+                   (:file "tags" :depends-on ("api"))
+                   (:file "taxes" :depends-on ("api"))
+                   (:file "transfers" :depends-on ("api"))
+                   (:file "users" :depends-on ("api"))
+                   (:file "walletables" :depends-on ("api"))
+                   (:file "wallete_txns" :depends-on ("api")))))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames
