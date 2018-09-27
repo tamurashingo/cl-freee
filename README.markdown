@@ -77,12 +77,74 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 
 #### 事業所
 
-```lisp
-(get-companies *conn*)
-```
+##### 事業所一覧の取得
 
 ```lisp
-(get-companies-details :id xxxx)
+(cl-freee:get-companies connection)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+
+
+##### 事業所の詳細情報の取得
+
+ユーザが所属する事業所の詳細を取得する
+
+```lisp
+(cl-freee:get-companies-detail connection id &key details account-items taxes items partners sections tags walletables)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `id` (number)
+    - 必須
+    - company-id
+- `details` (boolean)
+    - 取得情報に勘定科目・税区分コード・税区分・品目・取引先・部門・メモタグ・口座の一覧を含める
+- `account-items` (boolean)
+    - 取得情報に勘定科目一覧を含める
+- `taxes` (boolean)
+    - 取得情報に税区分コード・税区分一覧を含める
+- `items` (boolean)
+    - 取得情報に品目一覧を含める
+- `partners` (boolean)
+    - 取得情報に取引先一覧を含める
+- `sections` (boolean)
+    - 取得情報に部門一覧を含める
+- `tags` (boolean)
+    - 取得情報にメモタグ一覧を含める
+- `walletables` (boolean)
+    - 取得情報に口座一覧を含める
+
+
+##### 事業所情報の更新
+
+ユーザが所属する事業所の情報を更新する
+※同時に複数のリクエストを受け付けない
+
+
+```lisp
+(cl-freee:put-companies connection id &key content)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `id` (number)
+    - 必須
+    - company-id
+- `content` (alist)
+    - 必須
+    - 更新内容。パラメータはAPIドキュメントを参照してください
+
+```lisp
+'((:NAME . "新事業所名")
+  (:NAME--KANA . "シンジギョウショメイ")
+  (:CONTACT--NAME . "担当者名")
+  (:ADDRESS--ATTRIBUTES . ((:ZIPCODE . "141-0031")
+                           (:PREFECTURE--CODE . 12)
+                           (:STREET--NAME-1 . "品川区西五反田2-8-1")
+                           (:STREET--NAME-2 . "五反田ファーストビル9F"))))
 ```
 
 #### 取引

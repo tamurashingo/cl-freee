@@ -10,10 +10,10 @@
 (defgeneric get-comapnies (connection)
   (:documentation "ユーザが所属する事業所の一覧を取得する"))
 
-(defgeneric get-companies-detail (connection &rest args &key id details account-items taxes items partners sections tags walletables)
+(defgeneric get-companies-detail (connection id &rest args &key details account-items taxes items partners sections tags walletables)
   (:documentation "ユーザが所属する事業所の詳細を取得する"))
 
-(defgeneric put-companies (connection &rest args &key id content)
+(defgeneric put-companies (connection id &rest args &key content)
   (:documentation "ユーザが所属する事業所の情報を更新する"))
 
 
@@ -23,7 +23,7 @@
     (cl-json:decode-json-from-string
      (request uri connection :method :get))))
 
-(defmethod get-companies-detail ((connection <freee-connection>) &rest args &key id details account-items taxes items partners sections tags walletables)
+(defmethod get-companies-detail ((connection <freee-connection>) id &rest args &key details account-items taxes items partners sections tags walletables)
   (declare (ignore args))
   (let ((uri (quri:make-uri :defaults *API-URI*
                             :path (format NIL "~A/~A" *API-PATH-COMPANIES* id)
@@ -42,10 +42,10 @@
 
 
     
-(defmethod put-companies ((connection <freee-connection>) &rest args &key id content)
+(defmethod put-companies ((connection <freee-connection>) id &rest args &key content)
   (declare (ignore args))
-  (let ((uri (quri:make-uri :defaults *API-URI-COMPANIES*
-                            :path (format NIL "/~A" id))))
+  (let ((uri (quri:make-uri :defaults *API-URI*
+                            :path (format NIL "~A/~A" *API-PATH-COMPANIES* id))))
     (cl-json:decode-json-from-string
-     (request uri connection :method :get :content content))))
+     (request uri connection :method :put :content content))))
 
