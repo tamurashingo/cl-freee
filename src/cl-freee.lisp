@@ -4,7 +4,9 @@
   (:import-from :cl-freee.connection
                 :make-connection
                 :authorize
-                :refresh)
+                :refresh
+                :*PROXY*
+                :*API-DEBUG*)
   (:import-from :cl-freee.api.account-items
                 :get-account-items
                 :get-account-items-detail)
@@ -64,7 +66,9 @@
            :get-users-me
            :get-users-capabilities
            :get-walletables
-           :get-wallete-txns))
+           :get-wallete-txns
+           ; variable
+           :*PROXY*
+           :*API-DEBUG*))
 (in-package :cl-freee)
 
-;; blah blah blah.

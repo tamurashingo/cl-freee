@@ -5,7 +5,9 @@
            :access-token
            :authorize
            :make-connection
-           :refresh))
+           :refresh
+           :*PROXY*
+           :*API-DEBUG*))
   
 (in-package :cl-freee.connection)
 
@@ -31,6 +33,10 @@
 
 (defparameter *TOKEN-URI*
   "https://api.freee.co.jp/oauth/token")
+
+(defparameter *PROXY* NIL)
+
+(defparameter *API-DEBUG* NIL)
 
 (defgeneric authorize (connection authorization-code)
   (:documentation "authorization-codeを受け取り、アクセストークン、リフレッシュトークンを取得する"))
@@ -71,7 +77,9 @@
                         ("client_id" . ,(client-id connection))
                         ("client_secret" . ,(client-secret connection))
                         ("redirect_uri" . ,(redirect-uri connection))
-                        ("code" . ,authorization-code)))))
+                        ("code" . ,authorization-code))
+             :proxy *PROXY*
+             :verbose *API-DEBUG*)))
 
 (defmethod refresh ((connection <freee-connection>))
   (loop for x in (refresh-1 connection)
@@ -89,4 +97,6 @@
              :content `(("grant_type" . "refresh_token")
                         ("client_id" . ,(client-id connection))
                         ("client_secret" . ,(client-secret connection))
-                        ("refresh_token" . ,(refresh-token connection))))))
+                        ("refresh_token" . ,(refresh-token connection)))
+             :proxy *PROXY*
+             :verbose *API-DEBUG*)))

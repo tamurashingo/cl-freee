@@ -10,6 +10,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 - [ ] 人事労務feee 参照系APIの作成
 - [ ] 人事労務freee 更新系APIの作成
 - [ ] トークン切れになった際の自動リフレッシュ
+- [X] PROXY対応
 
 
 ## Usage
@@ -165,6 +166,64 @@ not implemented
 ```lisp
 (get-walletables *conn* :company-id xxxx)
 ```
+
+### PROXY
+接続前に `*PROXY*` に値を設定してください。
+[dexador](https://github.com/fukamachi/dexador#proxy) を使っているので、その形式で設定してください。
+
+
+```lisp
+(ql:quickload :cl-freee)
+(setf cl-freee:*PROXY* "http://proxy:8080")
+(defvar *conn*
+  (cl-freee:make-connection
+   :client-id "xxxxxxxxxx"
+   :client-secret "xxxxxxxxxx"
+   :redirect-uri "urn:ietf:wg:oauth:2.0:oob"))
+(cl-freee:authorize *conn* "xxxxxxxxxx")
+```
+
+### デバッグ
+通信内容を確認したい場合は、 `*API-DEBUG*` に `T` を設定してください。
+
+```lisp
+(cl-freee:get-companies *conn*)
+....
+....
+
+(setf cl-freee:*API-DEBUG* T)
+(cl-freee:get-companies *conn*)
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+GET /api/1/companies HTTP/1.1
+User-Agent: Dexador/0.9.10 (SBCL 1.3.21); Darwin; 16.7.0
+Host: api.freee.co.jp
+Accept: application/json
+Authorization: Bearer xxxxxxxxxxxxxxxxxxxxxxxx
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+HTTP/1.1 200 OK
+Date: Thu, 27 Sep 2018 09:43:45 GMT
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Status: 200 OK
+Cache-Control: max-age=0, private, must-revalidate
+X-XSS-Protection: 1; mode=block
+X-Request-Id: b639kqs0rg81hm8bo2m0
+ETag: W/"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+X-Frame-Options: SAMEORIGIN
+X-Runtime: 0.154992
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: https://developer.freee.co.jp
+Access-Control-Allow-Headers: *
+Access-Control-Allow-Methods: *
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+.....
+.....
+```
+
 
 ## 例
 
