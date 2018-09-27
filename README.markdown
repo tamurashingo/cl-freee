@@ -92,7 +92,8 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 ユーザが所属する事業所の詳細を取得する
 
 ```lisp
-(cl-freee:get-companies-detail connection id &key details account-items taxes items partners sections tags walletables)
+(cl-freee:get-companies-detail connection id &key details account-items taxes
+                               items partners sections tags walletables)
 ```
 
 - `connection` (cl-freee.connection:<freee-connection>)
