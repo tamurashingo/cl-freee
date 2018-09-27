@@ -4,7 +4,9 @@
   (:import-from :cl-freee.connection
                 :<freee-connection>
                 :access-token
-                :refresh)
+                :refresh
+                :*PROXY*
+                :*API-DEBUG*)
   (:export :<freee-connection>
            :<freee-connection-company>
            :*API-URI*
@@ -53,17 +55,29 @@
 
   
 (defun request (uri connection &key method content)
-  (let ((header `(("Authorization" . ,(format NIL "Bearer ~A" (access-token connection))))))
+  (let ((header `(("Authorization" . ,(format NIL "Bearer ~A" (access-token connection)))
+                  ("accept" . "application/json"))))
     (cond ((eq method :get)
            (dex:get uri
-                    :headers header))
+                    :headers header
+                    :proxy *PROXY*
+                    :verbose *API-DEBUG*))
           ((eq method :post)
            (dex:post uri
                      :headers header
-                     :content content))
+                     :content content
+                     :proxy *PROXY*
+                     :verbose *API-DEBUG*))
           ((eq method :put)
-           (dex:put uri
-                    :headers header
-                    :content content))
+           (let ((header (push '("Content-Type" . "application/json") header))
+                 (content (cl-json:encode-json content)))
+             (dex:put uri
+                      :headers header
+                      :content content
+                      :proxy *PROXY*
+                      :verbose *API-DEBUG*)))
           ((eq method :delete)
-           (dex:delete uri)))))
+           (dex:delete uri
+                       :headers header
+                       :proxy *PROXY*
+                       :verbose *API-DEBUG*)))))
