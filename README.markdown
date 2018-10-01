@@ -180,8 +180,62 @@ not implemented
 
 #### 取引先
 
+##### 取引先一覧の取得
+
+指定した事業所の取引先一覧を取得する
+
 ```lisp
-(get-partners *conn* :company-id xxxx)
+(cl-freee:get-partners connection &key company-id offset limit)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+- `offset` (number)
+    - 取得レコードのオフセット(デフォルト: 0)
+- `limit` (number)
+    - 取得レコードの件数
+
+##### 取引先の作成
+
+指定した事業所の取引先を作成する
+
+```lisp
+(cl-freee:post-partners connection &key content)
+```
+
+- `content` (alist)
+    - 必須
+    - 取引先の作成。パラメータはAPIドキュメントを参照してください
+
+```lisp
+'((:COMPANY--ID . 1046386)
+  (:NAME . "新しい取引先")
+  (:SHORTCUT-1 . "NEWPARTNER")
+  (:SHORTCUT-2 . "502")
+  (:LONG--NAME . "新しい取引先正式名称")
+  (:NAME--KANA . "アタラシイトリヒキサキメイショウ")
+  (:DEFAULT--TITLE . "御中")
+  (:PHONE . "03-3000-1111")
+  (:CONTACT--NAME . "営業担当")
+  (:EMAIL . "sample@sample.com")
+  (:ADDRESS--ATTRIBUTES . ((:ZIPCODE . "012-0009")
+                           (:PREFECTURE--CODE . 4)
+                           (:STREET--NAME-1 . "湯沢市")
+                           (:STREET--NAME-2 . "Aビル")))
+  (:PARTNER--DOC--SETTING--ATTRIBUTES . ((:SENDING--METHOD . "posting")))
+  (:PARTNER--BANK--ACCOUNT--ATTRIBUTES . ((:BANK--NAME . "みずほ銀行")
+                                          (:BANK--NAME--KANA . "ミズホ")
+                                          (:BANK--CODE . "001")
+                                          (:BRANCH--NAME . "銀座支店")
+                                          (:BRANCH--KANA . "ギンザ")
+                                          (:BRANCH--CODE . "101")
+                                          (:ACCOUNT--TYPE . "ordinary")
+                                          (:ACCOUNT--NUMBER . "1010101")
+                                          (:LONG--ACCOUNT--NAME . "freee太郎")
+                                          (:ACCOUNT--NAME . "フリータロウ"))))
 ```
 
 #### 部門

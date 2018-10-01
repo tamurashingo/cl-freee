@@ -63,11 +63,14 @@
                     :proxy *PROXY*
                     :verbose *API-DEBUG*))
           ((eq method :post)
-           (dex:post uri
-                     :headers header
-                     :content content
-                     :proxy *PROXY*
-                     :verbose *API-DEBUG*))
+           (let ((header (push '("Content-Type" . "application/json") header))
+                 (content (with-output-to-string (json)
+                            (cl-json:encode-json-alist content json))))
+             (dex:post uri
+                       :headers header
+                       :content content
+                       :proxy *PROXY*
+                       :verbose *API-DEBUG*)))
           ((eq method :put)
            (let ((header (push '("Content-Type" . "application/json") header))
                  (content (with-output-to-string (json)
