@@ -12,10 +12,15 @@
   :author "tamura shingo"
   :license "MIT"
   :depends-on (:cl-freee
-               :prove)
+               :prove
+               :cl-mock)
   :components ((:module "t"
                 :components
-                ((:test-file "cl-freee"))))
+                ((:test-file "cl-freee")
+                 (:test-file "connection")
+                 (:module "api"
+                  :components
+                  ((:file "api"))))))
   :description "Test system for cl-freee"
 
   :defsystem-depends-on (:prove-asdf)

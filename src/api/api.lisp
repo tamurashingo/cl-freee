@@ -52,36 +52,61 @@
                                     (WALLETABLES . "/walletables"))
              collect `(define-path ,name ,path)))
 
+(defmacro with-token-refresh (refresh-fn &body body)
+  `(let ((count 1))
+     (tagbody
+      (go request)
+      refresh
+        (funcall ,refresh-fn)
+      request
+        (handler-bind ((dexador.error:http-request-unauthorized
+                        (lambda (c)
+                          (when (< count 2)
+                            (when *API-DEBUG*
+                              (format T "APIトークンをリフレッシュします~%"))
+                            (setf count (1+ count))
+                            (go refresh))))
+                       (dexador.error:http-request-forbidden
+                        (lambda (c)
+                          (when (< count 2)
+                            (when *API-DEBUG*
+                              (format T "APIトークンをリフレッシュします~%"))
+                            (setf count (1+ count))
+                            (go refresh)))))
+          (return-from request
+            (progn
+              ,@body))))))
 
-  
 (defun request (uri connection &key method content)
-  (let ((header `(("Authorization" . ,(format NIL "Bearer ~A" (access-token connection)))
-                  ("accept" . "application/json"))))
-    (cond ((eq method :get)
-           (dex:get uri
-                    :headers header
-                    :proxy *PROXY*
-                    :verbose *API-DEBUG*))
-          ((eq method :post)
-           (let ((header (push '("Content-Type" . "application/json") header))
-                 (content (with-output-to-string (json)
-                            (cl-json:encode-json-alist content json))))
-             (dex:post uri
-                       :headers header
-                       :content content
-                       :proxy *PROXY*
-                       :verbose *API-DEBUG*)))
-          ((eq method :put)
-           (let ((header (push '("Content-Type" . "application/json") header))
-                 (content (with-output-to-string (json)
-                            (cl-json:encode-json-alist content json))))
-             (dex:put uri
+  (with-token-refresh #'(lambda ()
+                          (refresh connection))
+    (let ((header `(("Authorization" . ,(format NIL "Bearer ~A" (access-token connection)))
+                    ("accept" . "application/json"))))
+      (cond ((eq method :get)
+             (dex:get uri
                       :headers header
-                      :content content
                       :proxy *PROXY*
-                      :verbose *API-DEBUG*)))
-          ((eq method :delete)
-           (dex:delete uri
-                       :headers header
-                       :proxy *PROXY*
-                       :verbose *API-DEBUG*)))))
+                      :verbose *API-DEBUG*))
+            ((eq method :post)
+             (let ((header (push '("Content-Type" . "application/json") header))
+                   (content (with-output-to-string (json)
+                              (cl-json:encode-json-alist content json))))
+               (dex:post uri
+                         :headers header
+                         :content content
+                         :proxy *PROXY*
+                         :verbose *API-DEBUG*)))
+            ((eq method :put)
+             (let ((header (push '("Content-Type" . "application/json") header))
+                   (content (with-output-to-string (json)
+                              (cl-json:encode-json-alist content json))))
+               (dex:put uri
+                        :headers header
+                        :content content
+                        :proxy *PROXY*
+                        :verbose *API-DEBUG*)))
+            ((eq method :delete)
+             (dex:delete uri
+                         :headers header
+                         :proxy *PROXY*
+                         :verbose *API-DEBUG*))))))

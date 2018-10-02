@@ -1,0 +1,34 @@
+language: common-lisp
+sudo: false
+
+env:
+  global:
+    - ROSWELL_INSTALL_DIR=$HOME/.roswell
+  matrix:
+    - LISP=sbcl-bin
+    - LISP=ccl-bin
+    - LISP=abcl-bin/1.3.3
+    - LISP=ecl
+
+addons:
+  apt:
+    packages:
+      - default-jre
+
+install:
+  # Roswell
+  - curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
+  # prove
+  - ros install prove
+
+cache:
+ directories:
+   - $HOME/.roswell
+   - $HOME/.config/common-lisp
+
+before_script:
+  - ros --version
+  - ros config
+
+script:
+  - run-prove cl-freee-test.asd
