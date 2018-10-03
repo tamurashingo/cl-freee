@@ -8,8 +8,7 @@ env:
   matrix:
     - LISP=sbcl-bin
     - LISP=ccl-bin
-    - LISP=abcl-bin/1.3.3
-    - LISP=ecl
+    - LISP=abcl-bin
 
 addons:
   apt:
