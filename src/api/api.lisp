@@ -54,28 +54,32 @@
 
 (defmacro with-token-refresh (refresh-fn &body body)
   `(let ((count 1))
-     (tagbody
-      (go request)
-      refresh
-        (funcall ,refresh-fn)
-      request
-        (handler-bind ((dexador.error:http-request-unauthorized
-                        (lambda (c)
-                          (when (< count 2)
-                            (when *API-DEBUG*
-                              (format T "APIトークンをリフレッシュします~%"))
-                            (setf count (1+ count))
-                            (go refresh))))
-                       (dexador.error:http-request-forbidden
-                        (lambda (c)
-                          (when (< count 2)
-                            (when *API-DEBUG*
-                              (format T "APIトークンをリフレッシュします~%"))
-                            (setf count (1+ count))
-                            (go refresh)))))
-          (return-from request
-            (progn
-              ,@body))))))
+     (block exit
+       (tagbody
+          (go request)
+        refresh
+          (handler-bind ((error
+                          (lambda (c)
+                            (return-from exit (error c)))))
+            (funcall ,refresh-fn))
+        request
+          (handler-bind ((dexador.error:http-request-unauthorized
+                          (lambda (c)
+                            (when (< count 2)
+                              (when *API-DEBUG*
+                                (format T "APIトークンをリフレッシュします~%"))
+                              (setf count (1+ count))
+                              (go refresh))))
+                         (dexador.error:http-request-forbidden
+                          (lambda (c)
+                            (when (< count 2)
+                              (when *API-DEBUG*
+                                (format T "APIトークンをリフレッシュします~%"))
+                              (setf count (1+ count))
+                              (go refresh)))))
+            (return-from exit
+              (progn
+                ,@body)))))))
 
 (defun request (uri connection &key method content)
   (with-token-refresh #'(lambda ()

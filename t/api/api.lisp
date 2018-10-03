@@ -5,10 +5,9 @@
         :cl-mock))
 (in-package :cl-freee.api-test)
 
-
 (setf cl-freee:*API-DEBUG* T)
 
-(plan 2)
+(plan 6)
 
 (subtest "401が返ってきた時にリフレッシュして再度リクエストを投げること"
   (let ((conn (cl-freee:make-connection :client-id "xxxxx"
@@ -132,5 +131,116 @@
             "新しいトークンがセットされていること")
         (ok companies)))))
 
+(subtest "401が2回返ったときはエラーとなること"
+  (let ((conn (cl-freee:make-connection :client-id "xxxxx"
+                                        :client-secret "yyyyy"
+                                        :redirect-uri "zzzzz"
+                                        :access-token "11111"
+                                        :refresh-token "22222"))
+        (count 0))
+    (with-mocks ()
+      (answer (dex:get uri :headers header :proxy proxy :verbose verbose)
+        (progn
+          (setf count (1+ count))
+          (error (make-condition 'dexador.error:http-request-unauthorized
+                                 :body "unauthorized error"
+                                 :status 401
+                                 :uri "https://api.freee.co.jp/"))))
+      (answer (dex:post uri :content content :proxy proxy :verbose verbose)
+        (progn
+          (setf count (1+ count))
+          (error (make-condition 'dexador.error:http-request-unauthorized
+                                 :body "unauthorized error"
+                                 :status 401
+                                 :uri "https://api.freee.co.jp/"))))
+      (is-error (cl-freee.api.companies:get-companies conn)
+                'dexador.error:http-request-unauthorized
+                "401エラーが返ってくること")
+      (is count 2
+          "呼び出し回数が2回であること(get-companies, refresh)"))))
+
+(subtest "403が2回返ったときはエラーとなること"
+  (let ((conn (cl-freee:make-connection :client-id "xxxxx"
+                                        :client-secret "yyyyy"
+                                        :redirect-uri "zzzzz"
+                                        :access-token "11111"
+                                        :refresh-token "22222"))
+        (count 0))
+    (with-mocks ()
+      (answer (dex:get uri :headers header :proxy proxy :verbose verbose)
+        (progn
+          (setf count (1+ count))
+          (error (make-condition 'dexador.error:http-request-forbidden
+                               :body "forbidden error"
+                               :status 403
+                               :uri "https://api.freee.co.jp/"))))
+      (answer (dex:post uri :content content :proxy proxy :verbose verbose)
+        (progn
+          (setf count (1+ count))
+          (error (make-condition 'dexador.error:http-request-forbidden
+                               :body "forbidden error"
+                               :status 403
+                               :uri "https://api.freee.co.jp/"))))
+      (is-error (cl-freee.api.companies:get-companies conn)
+                'dexador.error:http-request-forbidden
+                "403エラーが返ってくること")
+      (is count 2
+          "呼び出し回数が2回であること(get-companies, refresh)"))))
+
+(subtest "401のあとに403が返ったときは403エラーとなること"
+  (let ((conn (cl-freee:make-connection :client-id "xxxxx"
+                                        :client-secret "yyyyy"
+                                        :redirect-uri "zzzzz"
+                                        :access-token "11111"
+                                        :refresh-token "22222"))
+        (count 0))
+    (with-mocks ()
+      (answer (dex:get uri :headers header :proxy proxy :verbose verbose)
+        (progn
+          (setf count (1+ count))
+          (error (make-condition 'dexador.error:http-request-unauthorized
+                                 :body "unauthorized error"
+                                 :status 401
+                                 :uri "https://api.freee.co.jp/"))))
+      (answer (dex:post uri :content content :proxy proxy :verbose verbose)
+        (progn
+          (setf count (1+ count))
+          (error (make-condition 'dexador.error:http-request-forbidden
+                                 :body "forbidden error"
+                                 :status 403
+                                 :uri "https://api.freee.co.jp/"))))
+      (is-error (cl-freee.api.companies:get-companies conn)
+                'dexador.error:http-request-forbidden
+                "403エラーが返ってくること")
+      (is count 2
+          "呼び出し回数が2回であること(get-companies, refresh)"))))
+
+(subtest "403のあとに401が返ったときは401エラーとなること"
+  (let ((conn (cl-freee:make-connection :client-id "xxxxx"
+                                        :client-secret "yyyyy"
+                                        :redirect-uri "zzzzz"
+                                        :access-token "11111"
+                                        :refresh-token "22222"))
+        (count 0))
+    (with-mocks ()
+      (answer (dex:get uri :headers header :proxy proxy :verbose verbose)
+        (progn
+          (setf count (1+ count))
+          (error (make-condition 'dexador.error:http-request-forbidden
+                                 :body "forbidden error"
+                                 :status 403
+                                 :uri "https://api.freee.co.jp/"))))
+      (answer (dex:post uri :content content :proxy proxy :verbose verbose)
+        (progn
+          (setf count (1+ count))
+          (error (make-condition 'dexador.error:http-request-unauthorized
+                                 :body "unauthorized error"
+                                 :status 401
+                                 :uri "https://api.freee.co.jp/"))))
+      (is-error (cl-freee.api.companies:get-companies conn)
+                'dexador.error:http-request-unauthorized
+                "401エラーが返ってくること")
+      (is count 2
+          "呼び出し回数が2回であること(get-companies, refresh)"))))
 
 (finalize)
