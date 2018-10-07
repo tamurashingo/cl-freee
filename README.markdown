@@ -9,7 +9,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 - [ ] 会計freee 更新系APIの作成
 - [ ] 人事労務feee 参照系APIの作成
 - [ ] 人事労務freee 更新系APIの作成
-- [ ] トークン切れになった際の自動リフレッシュ
+- [X] トークン切れになった際の自動リフレッシュ
 - [X] PROXY対応
 
 
@@ -61,12 +61,73 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 
 #### 勘定科目
 
-```lisp
-(get-account-items *conn* :company-id xxxx)
-```
+##### 勘定科目一覧の取得
+
+指定した事業所の勘定科目一覧を取得する
 
 ```lisp
-(get-account-items-detail *conn* xxx :company-id xxxx)
+(cl-freee:get-account-items connection &key company-id base-date)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+- `base-date` (string)
+    - 基準日
+
+##### 勘定科目の詳細情報の取得
+
+指定した勘定科目の詳細を取得する
+
+```lisp
+(cl-freee:get-account-items-detail connection id &key company-id)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `id` (number)
+    - 必須
+    - 勘定科目ID
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+
+##### 勘定科目の作成
+
+指定した事業所の勘定科目を作成する
+
+
+```lisp
+(cl-freee:post-account-item connection &key content)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `content` (alist)
+    - 必須
+    - 勘定科目の作成。パラメータはAPIドキュメントを参照してください
+
+
+```lisp
+((:COMPANY--ID . 1046386)
+ (:ACCOUNT--ITEM
+  (:NAME . "新しい勘定科目")
+  (:SHORTCUT . "NEWACCOUNTITEM")
+  (:SHORTCUT--NUM . "999")
+  (:TAX--NAME . "課税売上")
+  (:GROUP--NAME . "その他預金")
+  (:ACCOUNT--CATEGORY . "現金・預金")
+  (:CORRESPONDING--INCOME--NAME . "売掛金")
+  (:CORRESPONDING--EXPENSE--NAME . "買掛金")
+  (:ACCUMULATED--DEP--ACCOUNT--ITEM--NAME . "減価償却累計額勘定科目")
+  (:SEARCHABLE . 2)
+  (:ITEMS
+   ((:ID . 1)
+    (:ID . 3)))
+  (:PARTNERS
+   ((:ID . 14134752)))))
 ```
 
 #### 連携サービス

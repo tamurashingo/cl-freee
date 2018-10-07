@@ -12,6 +12,12 @@
 (defgeneric get-account-items-detail (connection id &rest args &key company-id)
   (:documentation "指定した勘定科目の詳細を取得する"))
 
+(defgeneric post-account-items (connection &rest args &key content)
+  (:documentation "指定した事業所の勘定科目を作成する"))
+
+(defgeneric put-account-items (connection id &rest args &key content)
+  (:documentation "勘定科目を更新する"))
+
 
 (defmethod get-account-items ((connection <freee-connection>) &rest args &key company-id base-date)
   (declare (ignore args))
@@ -32,3 +38,9 @@
     (cl-json:decode-json-from-string
      (request uri connection :method :get))))
 
+(defmethod post-account-items ((connection <freee-connection>) &rest args &key content)
+  (declare (ignore args))
+  (let ((uri (quri:make-uri :defaults *API-URI*
+                            :path *API-PATH-ACCOUNT-ITEMS*)))
+    (cl-json:decode-json-from-string
+     (request uri connection :method :post :content content))))
