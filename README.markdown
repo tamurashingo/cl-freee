@@ -323,8 +323,39 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 
 #### 品目
 
+##### 品目一覧の取得
+
+指定した事業所の品目一覧を取得する
+
 ```lisp
-(get-items *conn* :company-id xxxx)
+(cl-freee:get-items connection &key company-id)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+
+##### 品目の作成
+
+指定した事業所の品目を作成する
+
+```lisp
+(cl-freee:post-items connection &key content)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `content` (alist)
+    - 必須
+    - 更新内容。パラメータはAPIドキュメントを参照してください
+
+```lisp
+'((:COMPANY--ID . 1)
+  (:NAME . "新しい品目")
+  (:SHORTCUT-1 . "NEWITEM")
+  (:SHORTCUT-2 . "202"))
 ```
 
 #### 仕訳帳
