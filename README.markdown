@@ -364,12 +364,104 @@ not implemented
 
 #### 振替伝票
 
-```lisp
-(get-manual-journals *conn* :company-id xxxx)
-```
+##### 振替伝票一覧の取得
+
+指定した事業所の振替伝票一覧を取得する
 
 ```lisp
-(get-manual-journals-detail *conn* xxx :company-id xxxx)
+(cl-freee:get-manual-journals connection &key company-id start-issue-date
+                              end-issue-date entry-side account-item-id
+                              min-amount max-amount partner-id item-id
+                              section-id comment-status comment-important
+                              adjustment txn-number offset limit)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+- `start-issue-date` (string)
+    - 発生日で絞込：開始日(yyyy-mm-dd)
+- `end_issue_date` (string)
+    - 発生日で絞込：終了日(yyyy-mm-dd)
+- `entry_side` (string)
+    - 貸借で絞込 (貸方: credit, 借方: debit)
+- `account_item_id` (integer)
+    - 勘定科目IDで絞込
+- `min_amount` (integer)
+    - 金額で絞込：下限
+- `max_amount` (integer)
+    - 金額で絞込：上限
+- `partner_id` (integer)
+    - 取引先IDで絞込（0を指定すると、取引先が未選択の貸借行を絞り込めます）
+- `item_id` (integer)
+    - 品目IDで絞込（0を指定すると、品目が未選択の貸借行を絞り込めます）
+- `section_id` (integer)
+    - 部門IDで絞込（0を指定すると、部門が未選択の貸借行を絞り込めます）
+- `comment_status` (string)
+    - コメント状態で絞込（自分宛のコメント: posted_with_mention, 自分宛のコメント-未解決: raised_with_mention, 自分宛のコメント-解決済: resolved_with_mention, コメントあり: posted, 未解決: raised, 解決済: resolved, コメントなし: none）
+- `comment_important` (boolean)
+    - 重要コメント付きの振替伝票を絞込
+- `adjustment` (string)
+    - 決算整理仕訳で絞込（決算整理仕訳のみ: only, 決算整理仕訳以外: without）
+- `txn_number` (string)
+    - 仕訳番号で絞込（事業所の仕訳番号形式が有効な場合のみ）
+- `offset` (integer)
+    - 取得レコードのオフセット (デフォルト: 0)
+- `limit` (integer)
+    - 取得レコードの件数 (デフォルト: 20, 最大: 500)
+
+
+##### 振替伝票の取得
+
+指定した事業所の振替伝票を取得する
+
+```lisp
+(cl-freee:get-manual-journals-detail connection id &key company-id)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `id` (number)
+    - 振替伝票ID
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+
+##### 振替伝票の作成
+
+指定した事業所の振替伝票を作成する
+
+```lisp
+(cl-freee:post-manual-journals connection &key content)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `content` (alist)
+    - 必須
+    - 更新内容。パラメータはAPIドキュメントを参照してください
+
+```lisp
+'((:COMPANY--ID . 1)
+  (:ISSUE--DATE . "2018-10-05")
+  (:DETAILS
+   ((:ENTRY--SIDE . "credit")
+    (:ACCOUNT--ITEM--ID . 1)
+    (:TAX--CODE . 108)
+    (:AMOUNT . 3000)
+    (:VAT . 222)
+    (:ITEM--ID . 2)
+    (:DESCRIPTION . "テスト"))
+   ((:ENTRY--SIDE . "debit")
+    (:ACCOUNT--ITEM--ID . 1)
+    (:TAX--CODE . 108)
+    (:AMOUNT . 3000)
+    (:VAT . 222)
+    (:PARTNER--ID . 3)
+    (:ITEM--ID . 4)
+    (:DESCRIPTION . "テスト"))))
 ```
 
 #### 取引先
