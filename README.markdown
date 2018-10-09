@@ -211,12 +211,114 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 
 #### 取引
 
-```lisp
-(get-deals *conn* :company-id xxxx)
-```
+##### 指定した事業所の取引一覧（収入／支出）を取得する
 
 ```lisp
-(get-deals-detail *conn* xxx :company-id xxxx)
+(cl-freee:get-deals connection &key company-id partner-id status type
+                    start-issue-date end-issue-date start-due-date
+                    end-due-date offset limit registered-from)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+- `partner-id` (number)
+    - 取引先で絞り込み
+- `status` (string)
+    - 決済状況で絞込 (未決済: unsettled, 完了: settled)
+- `type` (string)
+    - 収支区分 (収入: income, 支出: expense)
+- `start-issue-date` (string)
+    - 発生日で絞込：開始日(yyyy-mm-dd)
+- `end-issue-date` (string)
+    - 発生日で絞込：終了日(yyyy-mm-dd)
+- `start-due-date` (string)
+    - 支払期日で絞込：開始日(yyyy-mm-dd)
+- `end-due-date` (string)
+    - 支払期日で絞込：終了日(yyyy-mm-dd)
+- `offset` (number)
+    - 取得レコードのオフセット (デフォルト: 0)
+- `limit` (number)
+    - 取得レコードの件数 (デフォルト: 20, 最大: 100)
+- `retistered-from` (string)
+    - 取引登録元アプリで絞込（me: 本APIを叩くアプリ自身から登録した取引のみ）
+
+##### 取引（収入／支出）の取得
+
+指定した事業所の取引（収入／支出）を取得する
+
+```lisp
+(cl-freee:get-deals-detail connection id &key company-id)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `id` (number)
+    - 取引ID
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+
+##### 取引（収入／支出）の作成
+
+指定した事業所の取引（収入／支出）を作成する
+
+```lisp
+(cl-freee:post-deals connection &key content)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `content` (alist)
+    - 必須
+    - 更新内容。パラメータはAPIドキュメントを参照してください
+
+```lisp
+'((:COMPANY--ID . 1046386)
+  (:ISSUE--DATE . "2018-10-01")
+  (:DUE--DATE . NIL)
+  (:TYPE . "expense")
+  (:PARTNER--ID . 14134752)
+  (:PREF--NUMBER . NIL)
+  (:DETAILS
+   ((:ACCOUNT--ITEM--ID . 166540467)
+    (:TAX--CODE . 6)
+    (:ITEM--ID . NIL)
+    (:SECTION--ID . NIL)
+    (:TAG--IDS . NIL)
+    (:AMOUNT . 5250)
+    (:DESCRIPTION . "備考")))
+  (:PAYMENTS
+   ((:DATE . "2018-10-01")
+    (:FROM--WALLETABLE--TYPE . "bank_account")
+    (:FROM--WALLETABLE--ID . 871657)
+    (:AMOUNT . 5250))))
+```
+
+##### 取引（収入／支出）の支払行作成
+
+指定した事業所の取引（収入／支出）の支払行を作成する
+
+```lisp
+(cl-freee:post-deals-payments connection id &key content)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `id` (number)
+    - 取引ID
+- `content` (alist)
+    - 必須
+    - 更新内容。パラメータはAPIドキュメントを参照してください
+
+```lisp
+'((:COMPANY--ID . 1046386)
+  (:DATE . "2018-10-09")
+  (:FROM--WALLETABLE--TYPE . "wallet")
+  (:FROM--WALLETABLE--ID . 1161161)
+  (:AMOUNT . 3000)))
 ```
 
 #### 品目
