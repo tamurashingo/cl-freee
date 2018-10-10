@@ -492,6 +492,8 @@ not implemented
 (cl-freee:post-partners connection &key content)
 ```
 
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
 - `content` (alist)
     - 必須
     - 取引先の作成。パラメータはAPIドキュメントを参照してください
@@ -526,8 +528,40 @@ not implemented
 
 #### 部門
 
+##### 部門一覧の取得
+
+指定した事業所の部門一覧を取得する
+
 ```lisp
-(get-sections *conn* :company-id xxxx)
+(cl-freee:get-sections connection &key company-id)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+
+##### 部門の作成
+
+指定した事業所の部門を作成する
+
+```lisp
+(cl-freee:post-sections connection &key content)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `content` (alist)
+    - 必須
+    - 取引先の作成。パラメータはAPIドキュメントを参照してください
+
+```lisp
+'((:COMPANY--ID . 1)
+  (:NAME . "開発1")
+  (:LONG--NAME . "第一開発部")
+  (:SHORTCUT-1 . "DEV1")
+  (:SHORTCUT-2 . "11"))
 ```
 
 #### フォーム用選択項目情報
