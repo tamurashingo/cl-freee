@@ -9,7 +9,8 @@
                 :*API-DEBUG*)
   (:import-from :cl-freee.api.account-items
                 :get-account-items
-                :get-account-items-detail)
+                :get-account-items-detail
+                :post-account-items)
   (:import-from :cl-freee.api.banks
                 :get-banks)
   (:import-from :cl-freee.api.companies
@@ -17,36 +18,47 @@
                 :get-companies-detail)
   (:import-from :cl-freee.api.deals
                 :get-deals
-                :get-deals-detail)
+                :get-deals-detail
+                :post-deals
+                :post-deals-payments)
   (:import-from :cl-freee.api.items
-                :get-items)
+                :get-items
+                :post-items)
   (:import-from :cl-freee.api.manual-journals
                 :get-manual-journals
-                :get-manual-journals-detail)
+                :get-manual-journals-detail
+                :post-manual-journals)
   (:import-from :cl-freee.api.partners
-                :get-partners)
+                :get-partners
+                :post-partners)
   (:import-from :cl-freee.api.sections
-                :get-sections)
+                :get-sections
+                :post-sections)
   (:import-from :cl-freee.api.selectables
                 :get-selectables)
   (:import-from :cl-freee.api.tags
-                :get-tags)
+                :get-tags
+                :post-tags)
   (:import-from :cl-freee.api.taxes
                 :get-taxes-codes)
   (:import-from :cl-freee.api.transfers
-                :get-transfers)
+                :get-transfers
+                :post-transfers)
   (:import-from :cl-freee.api.users
                 :get-users-me
                 :get-users-capabilities)
   (:import-from :cl-freee.api.walletables
-                :get-walletables)
+                :get-walletables
+                :post-walletables)
   (:import-from :cl-freee.api.wallete-txns
-                :get-wallete-txns)
+                :get-wallete-txns
+                :post-wallete-txns)
   (:export ;connection
            :make-connection
            :authorize
            :refresh
            ; api
+           ;   get
            :get-account-items
            :get-account-items-detail
            :get-banks
@@ -67,6 +79,17 @@
            :get-users-capabilities
            :get-walletables
            :get-wallete-txns
+           ;   post
+           :post-account-items
+           :post-deals
+           :post-deals-payments
+           :post-items
+           :post-manual-journals
+           :post-sections
+           :post-tags
+           :post-transfers
+           :post-walletables
+           :post-wallete-txns
            ; variable
            :*PROXY*
            :*API-DEBUG*))
