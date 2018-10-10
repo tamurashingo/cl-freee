@@ -383,29 +383,29 @@ not implemented
     - 事業所ID
 - `start-issue-date` (string)
     - 発生日で絞込：開始日(yyyy-mm-dd)
-- `end_issue_date` (string)
+- `end-issue-date` (string)
     - 発生日で絞込：終了日(yyyy-mm-dd)
-- `entry_side` (string)
+- `entry-side` (string)
     - 貸借で絞込 (貸方: credit, 借方: debit)
-- `account_item_id` (number)
+- `account-item-id` (number)
     - 勘定科目IDで絞込
-- `min_amount` (number)
+- `min-amount` (number)
     - 金額で絞込：下限
-- `max_amount` (number)
+- `max-amount` (number)
     - 金額で絞込：上限
-- `partner_id` (numbrer)
+- `partner-id` (numbrer)
     - 取引先IDで絞込（0を指定すると、取引先が未選択の貸借行を絞り込めます）
-- `item_id` (number)
+- `item-id` (number)
     - 品目IDで絞込（0を指定すると、品目が未選択の貸借行を絞り込めます）
-- `section_id` (number)
+- `section-id` (number)
     - 部門IDで絞込（0を指定すると、部門が未選択の貸借行を絞り込めます）
-- `comment_status` (string)
+- `comment-status` (string)
     - コメント状態で絞込（自分宛のコメント: posted_with_mention, 自分宛のコメント-未解決: raised_with_mention, 自分宛のコメント-解決済: resolved_with_mention, コメントあり: posted, 未解決: raised, 解決済: resolved, コメントなし: none）
-- `comment_important` (boolean)
+- `comment-important` (boolean)
     - 重要コメント付きの振替伝票を絞込
 - `adjustment` (string)
     - 決算整理仕訳で絞込（決算整理仕訳のみ: only, 決算整理仕訳以外: without）
-- `txn_number` (string)
+- `txn-number` (string)
     - 仕訳番号で絞込（事業所の仕訳番号形式が有効な場合のみ）
 - `offset` (number)
     - 取得レコードのオフセット (デフォルト: 0)
@@ -647,9 +647,9 @@ not implemented
 - `company-id` (number)
     - 必須
     - 事業所ID
-- `start_date` (string)
+- `start-date` (string)
     - 振替日で絞込：開始日 (yyyy-mm-dd)
-- `end_date` (string)
+- `end-date` (string)
     - 振替日で絞込：終了日 (yyyy-mm-dd)
 - `offset` (number)
     - 取得レコードのオフセット (デフォルト: 0)
@@ -683,19 +683,88 @@ not implemented
 
 #### ユーザ
 
-```lisp
-(get-users-me *conn*)
-```
+##### ログインユーザ情報の取得
+
+ユーザの情報を取得する
 
 ```lisp
-(get-users-capabilities *conn* :company-id xxxx)
+(cl-freee:get-users-me connection &key companies)
 ```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `companies` (boolean)
+    - 取得情報にユーザが所属する事業所一覧を含める
+
+##### ログインユーザの権限の取得
+
+ユーザの権限情報を取得する
+
+```lisp
+(cl-freee:get-users-capabilities &key company-id)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
 
 #### 明細
 
+##### 明細一覧の取得
+
+指定した事業所の明細一覧を取得する
+
 ```lisp
-(get-wallete-txns *conn* :company-id xxxx)
+(cl-freee:get-wallete-txns connection &key company-id walletable-type walletable-id
+                           start-date end-date entry-side offset limit)
 ```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+- `walletable-type` (string)
+    - 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, 現金: wallet)
+- `walletable-id` (number)
+    - 口座ID
+- `start-date` (string)
+    - 取引日で絞込：開始日 (yyyy-mm-dd)
+- `end-date` (string)
+    - 取引日で絞込：終了日 (yyyy-mm-dd)
+- `entry-side` (string)
+    - 入金／出金 (入金: income, 出金: expense)
+- `offset` (number)
+    - 取得レコードのオフセット (デフォルト: 0)
+- `limit` (number)
+    - 取得レコードの件数 (デフォルト: 20, 最大: 100)
+
+##### 明細の作成
+
+指定した事業所の明細を作成する
+
+```lisp
+(cl-freee:post-wallete-txns connection &key content)
+```
+
+```lisp
+'((:ENTRY--SIDE . "income")
+  (:DESCRIPTION . "振込 カ）ABC")
+  (:AMOUNT . 5000)
+  (:WALLETABLE--ID . 1)
+  (:WALLETABLE--TYPE . "bank_account")
+  (:DATE . "2018-01-01")
+  (:COMPANY--ID . 1)
+  (:BALANCE . 10000))
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `content` (alist)
+    - 必須
+    - 明細の作成。パラメータはAPIドキュメントを参照してください
 
 #### 口座
 
