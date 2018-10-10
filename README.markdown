@@ -273,7 +273,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
     - コネクション
 - `content` (alist)
     - 必須
-    - 更新内容。パラメータはAPIドキュメントを参照してください
+    - 取引の作成。パラメータはAPIドキュメントを参照してください
 
 ```lisp
 '((:COMPANY--ID . 1046386)
@@ -311,7 +311,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
     - 取引ID
 - `content` (alist)
     - 必須
-    - 更新内容。パラメータはAPIドキュメントを参照してください
+    - 取引の支払行の内容。パラメータはAPIドキュメントを参照してください
 
 ```lisp
 '((:COMPANY--ID . 1046386)
@@ -349,7 +349,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
     - コネクション
 - `content` (alist)
     - 必須
-    - 更新内容。パラメータはAPIドキュメントを参照してください
+    - 品目の作成。パラメータはAPIドキュメントを参照してください
 
 ```lisp
 '((:COMPANY--ID . 1)
@@ -441,7 +441,7 @@ not implemented
     - コネクション
 - `content` (alist)
     - 必須
-    - 更新内容。パラメータはAPIドキュメントを参照してください
+    - 振替伝票の作成。パラメータはAPIドキュメントを参照してください
 
 ```lisp
 '((:COMPANY--ID . 1)
@@ -554,7 +554,7 @@ not implemented
     - コネクション
 - `content` (alist)
     - 必須
-    - 取引先の作成。パラメータはAPIドキュメントを参照してください
+    - 部門の作成。パラメータはAPIドキュメントを参照してください
 
 ```lisp
 '((:COMPANY--ID . 1)
@@ -566,8 +566,57 @@ not implemented
 
 #### フォーム用選択項目情報
 
+##### フォーム用選択項目情報の取得
+
+指定した事業所のフォーム用選択項目情報を取得する
+
 ```lisp
-(get-selectables *conn* :company-id xxxx)
+(cl-freee:get-selectables connection &key company-id includes)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+- `includes` (string)
+    - 取得する項目(項目: account_item)
+
+#### メモタグ
+
+##### メモタグ一覧の取得
+
+指定した事業所のメモタグ一覧を取得する
+
+```lisp
+(cl-freee:get-tags connection &key company-id)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+
+##### メモタグの作成
+
+指定した事業所のメモタグを作成する
+
+```lisp
+(cl-freee:post-tags connection &key content)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `content` (alist)
+    - 必須
+    - メモタグの作成。パラメータはAPIドキュメントを参照してください
+
+```lisp
+'((:COMPANY--ID . 1046386)
+  (:NAME . "メモタグ")
+  (:SHORTCUT-1 . "memo")
+  (:SHORTCUT-2 . "1"))
 ```
 
 #### 税区分
