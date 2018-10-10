@@ -749,6 +749,12 @@ not implemented
 (cl-freee:post-wallete-txns connection &key content)
 ```
 
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `content` (alist)
+    - 必須
+    - 明細の作成。パラメータはAPIドキュメントを参照してください
+
 ```lisp
 '((:ENTRY--SIDE . "income")
   (:DESCRIPTION . "振込 カ）ABC")
@@ -760,16 +766,44 @@ not implemented
   (:BALANCE . 10000))
 ```
 
+#### 口座
+
+##### 口座一覧の取得
+
+指定した事業所の口座一覧を取得する
+
+```lisp
+(cl-freee:get-walletables connection &key company-id with-balance)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+- `with-balance`(string)
+    - 残高情報を含める
+
+##### 口座の作成
+
+指定した事業所に口座を作成する
+
+```lisp
+(cl-freee:post-walletables connection &key content)
+```
+
 - `connection` (cl-freee.connection:<freee-connection>)
     - コネクション
 - `content` (alist)
     - 必須
-    - 明細の作成。パラメータはAPIドキュメントを参照してください
-
-#### 口座
+    - 講座の作成。パラメータはAPIドキュメントを参照してください
 
 ```lisp
-(get-walletables *conn* :company-id xxxx)
+'((:NAME . "〇〇銀行")
+  (:TYPE . "bank_account")
+  (:BANK--ID . 1)
+  (:COMPANY--ID . 1)
+  (:GROUP--NAME . "前受金"))
 ```
 
 ### PROXY
