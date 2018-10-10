@@ -387,17 +387,17 @@ not implemented
     - 発生日で絞込：終了日(yyyy-mm-dd)
 - `entry_side` (string)
     - 貸借で絞込 (貸方: credit, 借方: debit)
-- `account_item_id` (integer)
+- `account_item_id` (number)
     - 勘定科目IDで絞込
-- `min_amount` (integer)
+- `min_amount` (number)
     - 金額で絞込：下限
-- `max_amount` (integer)
+- `max_amount` (number)
     - 金額で絞込：上限
-- `partner_id` (integer)
+- `partner_id` (numbrer)
     - 取引先IDで絞込（0を指定すると、取引先が未選択の貸借行を絞り込めます）
-- `item_id` (integer)
+- `item_id` (number)
     - 品目IDで絞込（0を指定すると、品目が未選択の貸借行を絞り込めます）
-- `section_id` (integer)
+- `section_id` (number)
     - 部門IDで絞込（0を指定すると、部門が未選択の貸借行を絞り込めます）
 - `comment_status` (string)
     - コメント状態で絞込（自分宛のコメント: posted_with_mention, 自分宛のコメント-未解決: raised_with_mention, 自分宛のコメント-解決済: resolved_with_mention, コメントあり: posted, 未解決: raised, 解決済: resolved, コメントなし: none）
@@ -407,9 +407,9 @@ not implemented
     - 決算整理仕訳で絞込（決算整理仕訳のみ: only, 決算整理仕訳以外: without）
 - `txn_number` (string)
     - 仕訳番号で絞込（事業所の仕訳番号形式が有効な場合のみ）
-- `offset` (integer)
+- `offset` (number)
     - 取得レコードのオフセット (デフォルト: 0)
-- `limit` (integer)
+- `limit` (number)
     - 取得レコードの件数 (デフォルト: 20, 最大: 500)
 
 
@@ -621,14 +621,64 @@ not implemented
 
 #### 税区分
 
+##### 税区分コード一覧の取得
+
+税区分コード一覧を取得する
+
 ```lisp
-(get-taxes-codes *conn*)
+(cl-freee:get-taxes-codes connection)
 ```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
 
 #### 取引（振替）
 
+##### 取引（振替）一覧の取得
+
+指定した事業所の取引（振替）一覧を取得する
+
 ```lisp
-(get-transfers *conn* :company-id xxxx)
+(cl-freee:get-transfers connection &key company-id start-date end-date offset limit)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `company-id` (number)
+    - 必須
+    - 事業所ID
+- `start_date` (string)
+    - 振替日で絞込：開始日 (yyyy-mm-dd)
+- `end_date` (string)
+    - 振替日で絞込：終了日 (yyyy-mm-dd)
+- `offset` (number)
+    - 取得レコードのオフセット (デフォルト: 0)
+- `limit` (number)
+    - 取得レコードの件数 (デフォルト: 20, 最大: 100)
+
+##### 取引（振替）の作成
+
+指定した事業所の取引（振替）を作成する
+
+```lisp
+(cl-freee:post-transfers connection &key content)
+```
+
+- `connection` (cl-freee.connection:<freee-connection>)
+    - コネクション
+- `content` (alist)
+    - 必須
+    - 取引（振替）の作成。パラメータはAPIドキュメントを参照してください
+
+```lisp
+'((:TO--WALLETABLE--ID . 1)
+  (:TO--WALLETABLE--TYPE . "bank_account")
+  (:FROM--WALLETABLE--ID . 2)
+  (:FROM--WALLETABLE--TYPE . "wallet")
+  (:AMOUNT . 5000)
+  (:DATE . "2018-10-10")
+  (:COMPANY--ID . 1)
+  (:DESCRIPTION . "テスト"))
 ```
 
 #### ユーザ

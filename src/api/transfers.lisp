@@ -8,6 +8,9 @@
 (defgeneric get-transfers (connection &rest args &key company-id start-date end-date offset limit)
   (:documentation "指定した事業所の取引（振替）一覧を取得する"))
 
+(defgeneric post-transfers (connection &rest args &key content)
+  (:documentation "指定した事業所の取引（振替）を作成する"))
+
 (defmethod get-transfers ((connection <freee-connection>) &rest args &key company-id start-date end-date offset limit)
   (declare (ignore args))
   (let ((uri (quri:make-uri :defaults *API-URI*
@@ -22,4 +25,9 @@
     (cl-json:decode-json-from-string
      (request uri connection :method :get))))
 
-           
+(defmethod post-transfers ((connection <freee-connection>) &rest args &key content)
+  (declare (ignore args))
+  (let ((uri (quri:make-uri :defaults *API-URI*
+                            :path *API-PATH-TRANSFERS*)))
+    (cl-json:decode-json-from-string
+     (request uri connection :method :post :content content))))
