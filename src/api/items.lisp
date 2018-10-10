@@ -2,7 +2,8 @@
 (defpackage cl-freee.api.items
   (:use :cl
         :cl-freee.api)
-  (:export :get-items))
+  (:export :get-items
+           :post-items))
 (in-package :cl-freee.api.items)
 
 (defgeneric get-items (connection &rest args &key company-id)

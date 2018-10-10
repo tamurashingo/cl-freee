@@ -3,7 +3,8 @@
   (:use :cl
         :cl-freee.api)
   (:export :get-manual-journals
-           :get-manual-journals-detail))
+           :get-manual-journals-detail
+           :post-manual-journals))
 (in-package :cl-freee.api.manual-journals)
 
 (defgeneric get-manual-journals (connection &rest args &key company-id start-issue-date end-issue-date entry-side account-item-id min-amount max-amount partner-id item-id section-id comment-status comment-important adjustment txn-number offset limit)

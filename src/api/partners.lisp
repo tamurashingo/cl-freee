@@ -2,7 +2,8 @@
 (defpackage cl-freee.api.partners
   (:use :cl
         :cl-freee.api)
-  (:export :get-partners))
+  (:export :get-partners
+           :post-partners))
 (in-package :cl-freee.api.partners)
 
 (defgeneric get-partners (connection &rest args &key company-id offset limit)

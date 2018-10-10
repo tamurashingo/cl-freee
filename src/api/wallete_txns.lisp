@@ -2,7 +2,8 @@
 (defpackage cl-freee.api.wallete-txns
   (:use :cl
         :cl-freee.api)
-  (:export :get-walete-txns))
+  (:export :get-wallete-txns
+           :post-wallete-txns))
 (in-package :cl-freee.api.wallete-txns)
 
 (defgeneric get-wallete-txns (connection &rest args &key company-id walletable-type walletable-id start-date end-date entry-side offset limit)

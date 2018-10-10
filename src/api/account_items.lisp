@@ -3,7 +3,8 @@
   (:use :cl
         :cl-freee.api)
   (:export :get-account-items
-           :get-account-items-detail))
+           :get-account-items-detail
+           :post-account-items))
 (in-package :cl-freee.api.account-items)
 
 (defgeneric get-account-items (connection &rest args &key company-id base-date)

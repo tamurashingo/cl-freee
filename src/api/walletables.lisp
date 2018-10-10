@@ -2,7 +2,8 @@
 (defpackage cl-freee.api.walletables
   (:use :cl
         :cl-freee.api)
-  (:export :get-walletables))
+  (:export :get-walletables
+           :post-walletables))
 (in-package :cl-freee.api.walletables)
 
 (defgeneric get-walletables (connection &rest args &key company-id with-balance)

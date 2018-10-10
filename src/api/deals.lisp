@@ -3,7 +3,9 @@
   (:use :cl
         :cl-freee.api)
   (:export :get-deals
-           :get-deals-detail))
+           :get-deals-detail
+           :post-deals
+           :post-deals-payments))
 (in-package :cl-freee.api.deals)
 
 (defgeneric get-deals (connection &rest args &key company-id partner-id status type start-issue-date end-issue-date start-due-date end-due-date offset limit registered-from)

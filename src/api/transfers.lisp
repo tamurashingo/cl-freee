@@ -2,7 +2,8 @@
 (defpackage cl-freee.api.transfers
   (:use :cl
         :cl-freee.api)
-  (:export :get-transfers))
+  (:export :get-transfers
+           :post-transfers))
 (in-package :cl-freee.api.transfers)
 
 (defgeneric get-transfers (connection &rest args &key company-id start-date end-date offset limit)

@@ -2,7 +2,8 @@
 (defpackage cl-freee.api.sections
   (:use :cl
         :cl-freee.api)
-  (:export :get-sections))
+  (:export :get-sections
+           :post-sections))
 (in-package :cl-freee.api.sections)
 
 (defgeneric get-sections (connection &rest args &key company-id)

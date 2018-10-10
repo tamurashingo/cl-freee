@@ -2,7 +2,8 @@
 (defpackage cl-freee.api.tags
   (:use :cl
         :cl-freee.api)
-  (:export :get-tags))
+  (:export :get-tags
+           :post-tags))
 (in-package :cl-freee.api.tags)
 
 (defgeneric get-tags (connection &rest args &key company-id)
