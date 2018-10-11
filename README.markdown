@@ -69,7 +69,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 (cl-freee:get-account-items connection &key company-id base-date)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -85,7 +85,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 (cl-freee:get-account-items-detail connection id &key company-id)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `id` (number)
     - 必須
@@ -103,7 +103,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 (cl-freee:post-account-item connection &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `content` (alist)
     - 必須
@@ -144,7 +144,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 (cl-freee:get-companies connection)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 
 
@@ -157,7 +157,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
                                items partners sections tags walletables)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `id` (number)
     - 必須
@@ -190,7 +190,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 (cl-freee:put-companies connection id &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `id` (number)
     - 必須
@@ -219,7 +219,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
                     end-due-date offset limit registered-from)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -253,7 +253,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 (cl-freee:get-deals-detail connection id &key company-id)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `id` (number)
     - 取引ID
@@ -269,7 +269,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 (cl-freee:post-deals connection &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `content` (alist)
     - 必須
@@ -305,7 +305,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 (cl-freee:post-deals-payments connection id &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `id` (number)
     - 取引ID
@@ -331,7 +331,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 (cl-freee:get-items connection &key company-id)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -345,7 +345,7 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 (cl-freee:post-items connection &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `content` (alist)
     - 必須
@@ -376,7 +376,7 @@ not implemented
                               adjustment txn-number offset limit)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -421,7 +421,7 @@ not implemented
 (cl-freee:get-manual-journals-detail connection id &key company-id)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `id` (number)
     - 振替伝票ID
@@ -437,7 +437,7 @@ not implemented
 (cl-freee:post-manual-journals connection &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `content` (alist)
     - 必須
@@ -474,7 +474,7 @@ not implemented
 (cl-freee:get-partners connection &key company-id offset limit)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -492,7 +492,7 @@ not implemented
 (cl-freee:post-partners connection &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `content` (alist)
     - 必須
@@ -536,7 +536,7 @@ not implemented
 (cl-freee:get-sections connection &key company-id)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -550,7 +550,7 @@ not implemented
 (cl-freee:post-sections connection &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `content` (alist)
     - 必須
@@ -574,7 +574,7 @@ not implemented
 (cl-freee:get-selectables connection &key company-id includes)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -592,7 +592,7 @@ not implemented
 (cl-freee:get-tags connection &key company-id)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -606,7 +606,7 @@ not implemented
 (cl-freee:post-tags connection &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `content` (alist)
     - 必須
@@ -629,7 +629,7 @@ not implemented
 (cl-freee:get-taxes-codes connection)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 
 #### 取引（振替）
@@ -642,7 +642,7 @@ not implemented
 (cl-freee:get-transfers connection &key company-id start-date end-date offset limit)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -664,7 +664,7 @@ not implemented
 (cl-freee:post-transfers connection &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `content` (alist)
     - 必須
@@ -691,7 +691,7 @@ not implemented
 (cl-freee:get-users-me connection &key companies)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `companies` (boolean)
     - 取得情報にユーザが所属する事業所一覧を含める
@@ -704,7 +704,7 @@ not implemented
 (cl-freee:get-users-capabilities &key company-id)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -721,7 +721,7 @@ not implemented
                            start-date end-date entry-side offset limit)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -749,7 +749,7 @@ not implemented
 (cl-freee:post-wallete-txns connection &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `content` (alist)
     - 必須
@@ -776,7 +776,7 @@ not implemented
 (cl-freee:get-walletables connection &key company-id with-balance)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `company-id` (number)
     - 必須
@@ -792,7 +792,7 @@ not implemented
 (cl-freee:post-walletables connection &key content)
 ```
 
-- `connection` (cl-freee.connection:<freee-connection>)
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
     - コネクション
 - `content` (alist)
     - 必須
