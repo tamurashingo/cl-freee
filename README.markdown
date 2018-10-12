@@ -1,4 +1,6 @@
 # cl-freee
+[![Build Status](https://travis-ci.org/tamurashingo/cl-freee.svg?branch=master)](https://travis-ci.org/tamurashingo/cl-freee)
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 freeeのAPIをCommon Lispで使うためのライブラリです。
 
