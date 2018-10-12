@@ -134,9 +134,22 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
 
 #### 連携サービス
 
+##### 連携サービス一覧の取得
+
+連携しているサービス一覧を取得する
+
 ```lisp
-(get-banks *conn* :type "credit_card")
+(cl-freee:get-banks connection &key offset limit type)
 ```
+
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
+    - コネクション
+- `offset` (number)
+    - 開始位置
+- `limit` (number)
+    - 取得上限数,最大500件
+- `type` (string)
+    - サービス種別
 
 #### 事業所
 
