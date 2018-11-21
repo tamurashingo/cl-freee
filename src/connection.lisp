@@ -32,7 +32,7 @@
              :initform #'(lambda (access-token refresh-token) NIL))))
 
 (defparameter *TOKEN-URI*
-  "https://api.freee.co.jp/oauth/token")
+  "https://secure.freee.co.jp/oauth/token")
 
 (defparameter *PROXY* NIL)
 
