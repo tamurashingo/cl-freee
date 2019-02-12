@@ -132,6 +132,35 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
    ((:ID . 14134752)))))
 ```
 
+
+##### 勘定科目の更新
+
+指定した事業所の勘定科目を更新する
+
+```lisp
+(cl-freee:put-account-item connection id &key content)
+```
+
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
+    - コネクション
+- `id` (number)
+    - 必須
+    - 勘定科目ID
+- `content` (alist)
+    - 必須
+    - company_idと更新内容
+
+```lisp
+((:COMPANY--ID . 1046386)
+ (:ACCOUNT--ITEM . ((:NAME . "ショートカット1")
+                    (:SHORTCUT . "SHORT1")
+                    (:SHORTCUT--NUM . "111")
+                    (:DEFAULT--TAX--ID . 84354742)
+                    (:DEFAULT--TAX--CODE . 2)
+                    (:CATEGORIES "資産" "固定資産" "投資等"))))
+```
+
+
 #### 連携サービス
 
 ##### 連携サービス一覧の取得

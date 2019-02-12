@@ -4,7 +4,8 @@
         :cl-freee.api)
   (:export :get-account-items
            :get-account-items-detail
-           :post-account-items))
+           :post-account-items
+           :put-account-items))
 (in-package :cl-freee.api.account-items)
 
 (defgeneric get-account-items (connection &rest args &key company-id base-date)
@@ -45,3 +46,10 @@
                             :path *API-PATH-ACCOUNT-ITEMS*)))
     (cl-json:decode-json-from-string
      (request uri connection :method :post :content content))))
+
+(defmethod put-account-items ((connection <freee-connection>) id &rest args &key content)
+  (declare (ignore args))
+  (let ((uri (quri:make-uri :defaults *API-URI*
+                            :path (format NIL "~A/~A" *API-PATH-ACCOUNT-ITEMS* id))))
+    (cl-json:decode-json-from-string
+     (request uri connection :method :put :content content))))

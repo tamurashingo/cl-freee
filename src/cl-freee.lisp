@@ -10,7 +10,8 @@
   (:import-from :cl-freee.api.account-items
                 :get-account-items
                 :get-account-items-detail
-                :post-account-items)
+                :post-account-items
+                :put-account-items)
   (:import-from :cl-freee.api.banks
                 :get-banks)
   (:import-from :cl-freee.api.companies
