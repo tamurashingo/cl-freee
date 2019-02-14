@@ -48,4 +48,3 @@
                             :path (format NIL "~A/~A" *API-PATH-COMPANIES* id))))
     (cl-json:decode-json-from-string
      (request uri connection :method :put :content content))))
-

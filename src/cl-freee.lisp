@@ -16,7 +16,8 @@
                 :get-banks)
   (:import-from :cl-freee.api.companies
                 :get-companies
-                :get-companies-detail)
+                :get-companies-detail
+                :put-companies)
   (:import-from :cl-freee.api.deals
                 :get-deals
                 :get-deals-detail
@@ -91,6 +92,9 @@
            :post-transfers
            :post-walletables
            :post-wallete-txns
+           ;   put
+           :put-account-items
+           :put-companies
            ; variable
            :*PROXY*
            :*API-DEBUG*))
