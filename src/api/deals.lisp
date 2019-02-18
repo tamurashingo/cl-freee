@@ -5,7 +5,8 @@
   (:export :get-deals
            :get-deals-detail
            :post-deals
-           :post-deals-payments))
+           :post-deals-payments
+           :put-deals))
 (in-package :cl-freee.api.deals)
 
 (defgeneric get-deals (connection &rest args &key company-id partner-id status type start-issue-date end-issue-date start-due-date end-due-date offset limit registered-from)
@@ -19,6 +20,9 @@
 
 (defgeneric post-deals-payments (connection id &rest args &key content)
   (:documentation "指定した事業所の取引（収入／支出）の支払行を作成する"))
+
+(defgeneric put-deals (connection id &rest args &key content)
+  (:documentation "指定した事業所の取引（収入／支出）を更新する"))
 
 (defmethod get-deals ((connection <freee-connection>) &rest args &key company-id partner-id status type start-issue-date end-issue-date start-due-date end-due-date offset limit registered-from)
   (declare (ignore args))
@@ -61,3 +65,10 @@
                             :path (format NIL "~A/~A/payments" *API-PATH-DEALS* id))))
     (cl-json:decode-json-from-string
      (request uri connection :method :post :content content))))
+
+(defmethod put-deals ((connection <freee-connection>) id &rest args &key content)
+  (declare (ignore args))
+  (let ((uri (quri:make-uri :defaults *API-URI*
+                            :path (format NIL "~A/~A" *API-PATH-DEALS* id))))
+    (cl-json:decode-json-from-string
+     (request uri connection :method :put :content content))))

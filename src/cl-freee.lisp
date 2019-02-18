@@ -22,7 +22,8 @@
                 :get-deals
                 :get-deals-detail
                 :post-deals
-                :post-deals-payments)
+                :post-deals-payments
+                :put-deals)
   (:import-from :cl-freee.api.items
                 :get-items
                 :post-items)
@@ -95,6 +96,7 @@
            ;   put
            :put-account-items
            :put-companies
+           :put-deals
            ; variable
            :*PROXY*
            :*API-DEBUG*))

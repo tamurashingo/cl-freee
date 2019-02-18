@@ -365,6 +365,39 @@ freeeのAPIをCommon Lispで使うためのライブラリです。
   (:AMOUNT . 3000)))
 ```
 
+##### 取引（収入／支出）の更新
+
+指定した事業所の取引（収入／支出）を更新する
+
+```lisp
+(cl-freee:put-deals connection id &key content)
+```
+
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
+    - コネクション
+- `id` (number)
+    - 取引ID
+- `content` (alist)
+    - 必須
+    - 取引の支払行の内容。パラメータはAPIドキュメントを参照してください
+
+```lisp
+'((:ISSUE--DATE . "2018-10-09")
+  (:TYPE . "income")
+  (:COMPANY--ID . 1)
+  (:DUE--DATE . "2018-12-31")
+  (:PARTNER--ID . 1)
+  (:REF--NUMBER . "1")
+  (:DEALS
+   ((:ID . 1)
+    (:TAX--CODE . 1)
+    (:TAX--ID . 1)
+    (:ACCOUNT--ITEM--ID . 1)
+    (:AMOUNT . 1)
+    (:ITEM--ID . 1)
+    (:SECTION--ID . 1))))
+```
+
 #### 品目
 
 ##### 品目一覧の取得
