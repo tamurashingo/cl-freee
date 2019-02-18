@@ -541,6 +541,38 @@ not implemented
     (:DESCRIPTION . "テスト"))))
 ```
 
+##### 振替伝票の更新
+
+指定した事業所の振替伝票を更新する
+
+```lisp
+(cl-freee:put-manual-journals connection id &key content)
+```
+
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
+    - コネクション
+- `id` (number)
+    - 振替伝票ID
+- `content` (alist)
+    - 必須
+    - 振替伝票の更新。パラメータはAPIドキュメントを参照してください
+
+```lisp
+'((:COMPANY--ID . 1)
+  (:ISSUE--DATE . "2018-10-05")
+  (:ADJUSTMENT . nil)
+  (:DETAILS
+   ((:ID . 1)
+    (:ENTRY--SIDE . "debit")
+    (:TAX--CODE . 1)
+    (:ACCOUNT--ITEM--ID . 1)
+    (:AMOUNT . 10800)
+    (:VAT . 800)
+    (:PARTNER--ID . 1)
+    (:ITEM--ID . 1)
+    (:SECTION--ID . 1))))
+```
+
 #### 取引先
 
 ##### 取引先一覧の取得
