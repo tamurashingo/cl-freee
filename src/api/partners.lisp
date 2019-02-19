@@ -3,7 +3,8 @@
   (:use :cl
         :cl-freee.api)
   (:export :get-partners
-           :post-partners))
+           :post-partners
+           :put-partners))
 (in-package :cl-freee.api.partners)
 
 (defgeneric get-partners (connection &rest args &key company-id offset limit)
@@ -11,6 +12,9 @@
 
 (defgeneric post-partners (connection &rest args &key content)
   (:documentation "指定した事業所の取引先を作成する"))
+
+(defgeneric put-partners (connection id &rest args &key content)
+  (:documentation "指定した取引先の情報を更新する"))
 
 (defmethod get-partners ((connection <freee-connection>) &rest args &key company-id offset limit)
   (declare (ignore args))
@@ -30,3 +34,10 @@
                             :path *API-PATH-PARTNERS*)))
     (cl-json:decode-json-from-string
      (request uri connection :method :post :content content))))
+
+(defmethod put-partners ((connection <freee-connection>) id &rest args &key content)
+  (declare (ignore args))
+  (let ((uri (quri:make-uri :defaults *API-URI*
+                            :path (format NIL "~A/~A" *API-PATH-PARTNERS* id))))
+    (cl-json:decode-json-from-string
+     (request uri connection :method :put :content content))))

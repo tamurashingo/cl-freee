@@ -635,6 +635,30 @@ not implemented
                                           (:ACCOUNT--NAME . "フリータロウ"))))
 ```
 
+##### 取引先の更新
+
+指定した取引先の情報を更新する
+
+```lisp
+(cl-freee:put-partners connection id &key content)
+```
+
+- `connection` (cl-freee.connection:&lt;freee-connection&gt;)
+    - コネクション
+- `id` (number)
+    - 取引先ID
+- `content` (alist)
+    - 必須
+    - 取引先の作成。パラメータはAPIドキュメントを参照してください
+
+```lisp
+((:COMPANY--ID . 1)
+ (:NAME . "新しい取引先")
+ (:SHORTCUT-1 . "NEWPARTNER")
+ (:SHORTCUT-2 . "502")
+ (:LONG--NAME . "新しい取引先正式名称"))
+```
+
 #### 部門
 
 ##### 部門一覧の取得

@@ -34,7 +34,8 @@
                 :put-manual-journals)
   (:import-from :cl-freee.api.partners
                 :get-partners
-                :post-partners)
+                :post-partners
+                :put-partners)
   (:import-from :cl-freee.api.sections
                 :get-sections
                 :post-sections)
@@ -99,6 +100,7 @@
            :put-companies
            :put-deals
            :put-manual-journals
+           :put-partners
            ; variable
            :*PROXY*
            :*API-DEBUG*))
