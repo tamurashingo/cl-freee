@@ -17,7 +17,7 @@
 (defmethod post-manual-journals (connection &rest args &key content)
   (:documentation "指定した事業所の振替伝票を作成する"))
 
-(defmethod put-manual-journals (connection id &rest args &key conent)
+(defmethod put-manual-journals (connection id &rest args &key content)
   (:documentation "指定した事業所の振替伝票を更新する"))
 
 (defmethod get-manual-journals ((connection <freee-connection>) &rest args &key company-id start-issue-date end-issue-date entry-side account-item-id min-amount max-amount partner-id item-id section-id comment-status comment-important adjustment txn-number offset limit)
